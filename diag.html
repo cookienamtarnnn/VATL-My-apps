@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Supabase Diagnostic</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body style="font-family: monospace; padding: 20px; background: white; color: black;">
+    <h1>Supabase Diagnostic</h1>
+    <div id="log">Initializing...</div>
+
+    <script>
+        const log = (msg) => {
+            const el = document.getElementById('log');
+            el.innerHTML += '<br>' + msg;
+        };
+
+        // Step 1: Check if Supabase loaded
+        log('1. typeof supabase: ' + typeof supabase);
+        log('2. typeof window.supabase: ' + typeof window.supabase);
+        
+        if (typeof window.supabase !== 'undefined') {
+            log('3. supabase.createClient: ' + typeof window.supabase.createClient);
+            
+            // Step 2: Create client
+            try {
+                const client = window.supabase.createClient(
+                    'https://wgzxexklnndethybiipm.supabase.co',
+                    'sb_publishable_DAC1AlPLDy_pHpc23-ukUw_XQCS5VG7'
+                );
+                log('4. Client created: ' + typeof client);
+                
+                // Step 3: Fetch data
+                log('5. Fetching...');
+                client
+                    .from('web_apps')
+                    .select('*')
+                    .order('sort_order', { ascending: true })
+                    .then(({ data, error }) => {
+                        if (error) {
+                            log('6. ERROR: ' + JSON.stringify(error));
+                        } else {
+                            log('6. SUCCESS! Rows: ' + data.length);
+                            log('7. First row name: ' + (data[0]?.name || 'N/A'));
+                        }
+                    });
+            } catch (e) {
+                log('4. CATCH: ' + e.message);
+            }
+        } else {
+            log('3. ERROR: supabase not loaded!');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Minimal Supabase Test</title>
+</head>
+<body>
+    <h1>Minimal Supabase Test</h1>
+    <div id="status">Loading Supabase...</div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Check immediately after Supabase script
+        document.getElementById('status').innerHTML = 
+            'typeof supabase: ' + typeof supabase + '<br>' +
+            'typeof window.supabase: ' + typeof window.supabase;
+        
+        if (typeof window.supabase !== 'undefined') {
+            try {
+                const client = window.supabase.createClient(
+                    'https://wgzxexklnndethybiipm.supabase.co',
+                    'sb_publishable_DAC1AlPLDy_pHpc23-ukUw_XQCS5VG7'
+                );
+                
+                client
+                    .from('web_apps')
+                    .select('*')
+                    .order('sort_order', { ascending: true })
+                    .then(({ data, error }) => {
+                        if (error) {
+                            document.getElementById('status').innerHTML += 
+                                '<br>ERROR: ' + JSON.stringify(error);
+                        } else {
+                            document.getElementById('status').innerHTML += 
+                                '<br>SUCCESS! Rows: ' + data.length + 
+                                '<br>First: ' + (data[0]?.name || 'N/A');
+                        }
+                    });
+            } catch (e) {
+                document.getElementById('status').innerHTML += 
+                    '<br>Client Error: ' + e.message;
+            }
+        } else {
+            document.getElementById('status').innerHTML += 
+                '<br>ERROR: Supabase not loaded!';
+        }
+    </script>
+</body>
+</html>

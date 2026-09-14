@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supabase Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>Supabase Connection Test</h1>
+    <pre id="output">Loading...</pre>
+    <script>
+        const SUPABASE_URL = 'https://wgzxexklnndethybiipm.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_DAC1AlPLDy_pHpc23-ukUw_XQCS5VG7';
+        
+        try {
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            
+            supabase
+                .from('web_apps')
+                .select('*')
+                .order('sort_order', { ascending: true })
+                .then(({ data, error }) => {
+                    const output = document.getElementById('output');
+                    if (error) {
+                        output.innerHTML = 'ERROR:\n' + JSON.stringify(error, null, 2);
+                    } else {
+                        output.innerHTML = `SUCCESS! Found ${data.length} rows\n\nFirst 3:\n` + 
+                            JSON.stringify(data.slice(0, 3), null, 2);
+                    }
+                });
+        } catch (err) {
+            document.getElementById('output').innerHTML = 'INIT ERROR:\n' + err.message;
+        }
+    </script>
+</body>
+</html>
