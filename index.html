@@ -222,13 +222,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-        // ------------------------------------------------------------------
-        // CONFIGURATION: ใส่ค่า Supabase Project URL และ Anon Key ของคุณตรงนี้
-        // ------------------------------------------------------------------
         const SUPABASE_URL = '__SUPABASE_URL__';
         const SUPABASE_ANON_KEY = '__SUPABASE_ANON_KEY__';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+        
         let myAppsData = [];
         let bsModal = null;
 
