@@ -5,15 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Web App Hub</title>
     
-    <!-- นำเข้า Bootstrap CSS สำหรับทำ Modal หน้าต่างกรอกข้อมูล -->
+    <!-- นำเข้า Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- นำเข้า Bootstrap Icons สำหรับไอคอนแก้ไข/ลบ -->
+    <!-- นำเข้า Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
     <style>
-        /* ----------------------------------------------------- */
-        /* ดีไซน์เดิมของคุณทั้งหมด (ไม่มีการเปลี่ยนแปลงรูปแบบเดิม) */
-        /* ----------------------------------------------------- */
         * { box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -44,7 +41,6 @@
             gap: 20px;
             width: 100%;
             max-width: 1000px;
-            /* เพิ่มความสูงขั้นต่ำเพื่อให้ลากวางตอนหมวดหมู่นั้นว่างเปล่าได้ */
             min-height: 120px; 
         }
         .app-card {
@@ -57,8 +53,8 @@
             display: flex;
             flex-direction: column;
             border: 1px solid #eaeaea;
-            position: relative; /* สำหรับวางปุ่มแก้ไข/ลบ */
-            cursor: grab; /* เปลี่ยนเมาส์ให้รู้ว่าจับลากได้ */
+            position: relative;
+            cursor: grab;
         }
         .app-card:active {
             cursor: grabbing;
@@ -82,7 +78,7 @@
             font-weight: bold;
             margin-bottom: 20px;
             color: #1a73e8;
-            padding-right: 40px; /* เว้นที่ให้ปุ่มแก้ไข/ลบ */
+            padding-right: 40px;
         }
         .btn-group {
             display: flex;
@@ -107,9 +103,6 @@
         .btn-db { background: #f1f3f4; color: #3c4043; border: 1px solid #dadce0; }
         .btn-db:hover { background: #e8eaed; color: #3c4043;}
 
-        /* ----------------------------------------------------- */
-        /* ส่วนเสริมสำหรับระบบแก้ไข ลบ และปุ่มเพิ่มข้อมูล */
-        /* ----------------------------------------------------- */
         .action-icons {
             position: absolute;
             top: 15px;
@@ -134,7 +127,6 @@
             align-items: center;
         }
         
-        /* แก้ไขปุ่มของ Bootstrap ไม่ให้กระทบดีไซน์ของเก่า */
         .btn-primary-valeo {
             background-color: #1a73e8;
             color: white;
@@ -146,14 +138,13 @@
         }
         .btn-primary-valeo:hover { background-color: #1557b0; }
         
-        /* สไตล์ตอนกำลังลาก */
         .sortable-ghost { opacity: 0.4; border: 2px dashed #1a73e8; }
     </style>
 </head>
 <body>
 
     <div class="header-container mt-3">
-        <div></div> <!-- Spacer -->
+        <div></div>
         <h1>🚀 My Web App Hub</h1>
         <button class="btn-primary-valeo" onclick="openModal('add')">
             <i class="bi bi-plus-circle"></i> Add Website
@@ -162,19 +153,13 @@
 
     <!-- หมวดหมู่ระบบหลัก -->
     <h2 class="section-title">Main Applications</h2>
-    <div class="app-container" id="container-main">
-        <!-- จะถูกสร้างขึ้นมาอัตโนมัติด้วย JavaScript -->
-    </div>
+    <div class="app-container" id="container-main"></div>
 
     <!-- หมวดหมู่ Chonburi plant -->
     <h2 class="section-title">Chonburi plant (Sample)</h2>
-    <div class="app-container" id="container-chonburi">
-        <!-- จะถูกสร้างขึ้นมาอัตโนมัติด้วย JavaScript -->
-    </div>
+    <div class="app-container" id="container-chonburi"></div>
 
-    <!-- ========================================== -->
     <!-- MODAL (หน้าต่างเพิ่ม/แก้ไข) -->
-    <!-- ========================================== -->
     <div class="modal fade" id="appModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="border-radius: 12px; border: none;">
@@ -233,50 +218,54 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
+    <!-- Supabase JS Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
-        // 1. ข้อมูลตั้งต้น (Hardcode)
-        // ถ้าเบราว์เซอร์ยังไม่มีข้อมูลใน Local Storage จะดึงข้อมูลชุดนี้ไปใช้
-        const defaultApps = [
-            { id: "1", name: "Sale Inventory Dashboard", webUrl: "https://script.google.com/a/macros/valeo.com/s/AKfycbwsr68DDFfUywIBpfVgtGZsmVD81DJMnaQxA1IyjIpnBGx_v9jT43VGO2yRb-Ao8Kee2g/exec", dbUrl: "https://docs.google.com/spreadsheets/d/1ZzHm5D23cg5c9Hs7AwPBaB-QfVfLRtgg-0aKdHX5ZRc/edit?gid=1227609763#gid=1227609763", category: "main", color: "normal" },
-            { id: "2", name: "Inventory EXECUTIVE", webUrl: "https://script.google.com/a/macros/valeo.com/s/AKfycbwkmHe2pk8nZBMjyyOm8OZkjbw3I26v5c8F5zwYiPXkYoyBm4N0kRKdFgz-e20XAxBnpQ/exec", dbUrl: "https://docs.google.com/spreadsheets/d/1goBBPD1Ksmv-_A6VI1wmaDmvEwNzqCPpJ_wlycq91s4/edit?gid=0#gid=0", category: "main", color: "normal" },
-            { id: "3", name: "Smart Logistic monitoring", webUrl: "https://script.google.com/a/macros/valeo.com/s/AKfycbz7PcEpYQ_89QbkW5yao52f5hv6c2RMb5t3oKYiK7aKJFhdROFP9pvBnNT0j2hygPsS/exec", dbUrl: "https://docs.google.com/spreadsheets/d/11n-BhinWRd8rOGO1cOyLj2Z6Ca8L0zcbf3bMXwaZUI0/edit?gid=1173524393#gid=1173524393", category: "main", color: "normal" },
-            { id: "4", name: "KPIs dashboard", webUrl: "https://script.google.com/a/macros/valeo.com/s/AKfycbyHdxiA9a3-U6fAph2MxLasl5Qw4w0vmvwderdQMLlZZJ5SZMJ8MNvqlaTZegLmpdQa/exec", dbUrl: "https://docs.google.com/spreadsheets/d/16Sg_kZ9bO6HRqhxqHYCU_Qj2EkZGZC0lhKlE9fTKQr4/edit?gid=0#gid=0", category: "main", color: "gray" },
-            { id: "5", name: "PWR Plant KPIs dashboard", webUrl: "https://script.google.com/a/macros/valeo.com/s/AKfycbw936-W2tzFFTbxLiEOfJRtxJDHg-QRCUaM61lL5k5HKCbNCnfQoxPiLOUPUO1HjO5U7Q/exec", dbUrl: "https://docs.google.com/spreadsheets/d/1qdRv0QP5c6IM9xIKidRvXTgbQjApv795q3PXWz3eAG4/", category: "main", color: "normal" },
-            { id: "6", name: "Smart plan", webUrl: "https://valeoprouctionapp.runable.site/bom", dbUrl: "", category: "main", color: "normal" },
-            { id: "7", name: "Supplier Data", webUrl: "https://script.google.com/a/macros/valeo.com/s/AKfycbxsfl9Yt6WWwKR5-LWavaM30Faj9yh27zztXlmpcEJtbMJ0pR0HyeMPyc2dfU070dY4Uw/exec", dbUrl: "https://docs.google.com/spreadsheets/d/1ukuuh8YmWci0ZpQ3TtCiMEFRXvAeRpMQTY3X6mvCD7k/edit", category: "main", color: "highlight" },
-            { id: "8", name: "IEF", webUrl: "https://script.google.com/a/macros/valeo.com/s/AKfycbwIpqv23y8yh9kMEXxQwfY5SOmRlk-LruqktkwS5SeZiDMflqlPfHBjnIl1dHjsrH3lvw/exec", dbUrl: "https://docs.google.com/spreadsheets/d/1-JSXsi7P2UyXeauDiRUIBUH7OsXLyALZkbU0o8OWouw/edit", category: "main", color: "highlight" },
-            { id: "9", name: "Simulation part shortage", webUrl: "https://script.google.com/a/macros/valeo.com/s/AKfycbwL6_5p1v7kzDjF4AUjxWf5OjawuNKrusQJH2GDQfyEE1Xu4cLBFxUYzpYjvqkKjkKgCw/exec", dbUrl: "https://docs.google.com/spreadsheets/d/1POc0qzxpVHDBBNbnG6fcdpe0Cltnf3QHmGHn9vyH0sw/edit", category: "main", color: "highlight" },
-            { id: "10", name: "SC QRQC", webUrl: "https://script.google.com/a/macros/valeo.com/s/AKfycbxQBi-f7GFHTgcyZW9R51aaZZEs2R0ESpxQxCSoJ8rk7fHXbGBwGGaFZmA0PW1K92uC9w/exec", dbUrl: "https://docs.google.com/spreadsheets/d/1JDFzyWU0xCeOrC86syto4PmsTTxuB4QsB9RDknzO8cA", category: "main", color: "highlight" },
-            { id: "11", name: "Inventory & Consignment Ratio", webUrl: "https://script.google.com/a/macros/valeo.com/s/AKfycbyr8kY4HpCZ04iAVoNoyvv9ajXNcaroO7XMq9NnE_UzMWCBwKOmGQeuUL5glpYy932V/exec", dbUrl: "https://docs.google.com/spreadsheets/d/1nP4CZUg8RXX6fM_pjFRJCwWWpaPQ2rGOwu-SWVqnSm4", category: "main", color: "highlight" },
-            { id: "12", name: "EOD-EDI", webUrl: "https://script.google.com/a/macros/valeo.com/s/AKfycbx4-gO9P6rum4i2MEE13w5Sjq57dTElKz3aLt_zfTxObWfXzsMZyBL5q--bcO8s_FtlYA/exec", dbUrl: "https://docs.google.com/spreadsheets/d/1wk2cxYQsrFQnvNnal9mBAAYtyE3ITrVinO8G_P2xZvo/edit?gid=897582806#gid=897582806", category: "main", color: "normal" },
-            { id: "13", name: "Profreight inbound", webUrl: "https://script.google.com/a/macros/valeo.com/s/AKfycbzuhbhHqFuVSf_ZZ14QvtPFoF8MqLtjjqYRC11ESe5Uu0rOJml-Km3kc42od5e2tYrLXw/exec", dbUrl: "https://docs.google.com/spreadsheets/d/1ZdxM2Avm8p23vGalpAsQwGBEuq5Idf26sgERgJJb75Y/edit", category: "main", color: "normal" },
-            { id: "14", name: "Production Risk & Escalation", webUrl: "https://script.google.com/a/macros/valeo.com/s/AKfycbzduE2l7PROfdCjPgG3KhZdzEwnWVx7fmj6ANQ2VeXPhrOnGWvyPnyB5o2puBTaZIdr/exec", dbUrl: "https://docs.google.com/spreadsheets/d/1qTPv7mM3dytj4zUTcNr1uVopv79oj_TFKGZYMuqJHPg/edit", category: "main", color: "normal" },
-            { id: "15", name: "Central Plan KPI Hub", webUrl: "https://script.google.com/a/macros/valeo.com/s/AKfycbzJSJJdnOsYNjiUEiNLEP_OnMZRfQKSqeGjXxBWbMVAw0BQf5p_Z2mZqNmGGekPyAGy/exec", dbUrl: "https://docs.google.com/spreadsheets/d/1GKXb1uRnP7ml8RpuP_smF-YcuOYQpH6-DBQFUoiV0xg/edit", category: "main", color: "normal" },
-            { id: "16", name: "Chonburi plant", webUrl: "https://script.google.com/a/macros/valeo.com/s/AKfycby7OGqXHq_FAKCtmDiH5FJsq_Taw7kn48CRA0mnxmuum-llQ0DueKX9i6TaAy00ZJ3nmw/exec", dbUrl: "https://docs.google.com/spreadsheets/d/1OjNwEJPA6r3q2gH8Ap0T1X758QXYQX-5remgjBXEuvU/edit?gid=926363453#gid=926363453", category: "chonburi", color: "normal" },
-            { id: "17", name: "KPI Hub", webUrl: "https://script.google.com/a/macros/valeo.com/s/AKfycbwNq9wE1qYGLZPvtMQi0Xh8LnIIvgxX--IZsDVKHD_VUEsQPlNlqZkVRw0pXWa4fQIc/exec", dbUrl: "", category: "chonburi", color: "normal" }
-        ];
+        // ------------------------------------------------------------------
+        // CONFIGURATION: ใส่ค่า Supabase Project URL และ Anon Key ของคุณตรงนี้
+        // ------------------------------------------------------------------
+        const SUPABASE_URL = 'https://wgzxexklnndethybiipm.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnenhleGtsbm5kZXRoeWJpaXBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzMjE3NDYsImV4cCI6MjA5Mzg5Nzc0Nn0.5rhfouqenUV8MAwTet-m2t0umkWliH9Avq0RMtkVz9c';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let myAppsData = [];
-        let bsModal = null; // ตัวแปรเก็บ Modal
+        let bsModal = null;
 
-        // เมื่อหน้าเว็บโหลดเสร็จ
         document.addEventListener("DOMContentLoaded", () => {
             bsModal = new bootstrap.Modal(document.getElementById('appModal'));
-            
-            // ดึงข้อมูลจาก Local Storage
-            const savedData = localStorage.getItem('myWebAppsData_v1');
-            if (savedData) {
-                myAppsData = JSON.parse(savedData);
-            } else {
-                myAppsData = [...defaultApps];
-                saveToLocalStorage();
-            }
-            
-            renderApps();
+            fetchAppsFromSupabase();
             initDragAndDrop();
         });
 
-        // 2. ฟังก์ชันเรนเดอร์ข้อมูลลงหน้าเว็บ
+        // 1. ดึงข้อมูลทั้งหมดจาก Supabase
+        async function fetchAppsFromSupabase() {
+            const { data, error } = await supabase
+                .from('web_apps')
+                .select('*')
+                .order('sort_order', { ascending: true });
+
+            if (error) {
+                console.error("Error fetching data:", error);
+                alert("เกิดข้อผิดพลาดในการโหลดข้อมูลจาก Supabase");
+                return;
+            }
+
+            // แปลง snake_case จาก Postgres เป็น camelCase
+            myAppsData = data.map(item => ({
+                id: item.id,
+                name: item.name,
+                webUrl: item.web_url,
+                dbUrl: item.db_url,
+                category: item.category,
+                color: item.color,
+                sortOrder: item.sort_order
+            }));
+
+            renderApps();
+        }
+
+        // 2. เรนเดอร์การ์ดลงหน้าเว็บ
         function renderApps() {
             const mainContainer = document.getElementById('container-main');
             const chonburiContainer = document.getElementById('container-chonburi');
@@ -285,18 +274,15 @@
             chonburiContainer.innerHTML = '';
 
             myAppsData.forEach(app => {
-                // กำหนดคลาสสี
                 let colorClass = '';
                 if (app.color === 'highlight') colorClass = 'highlight-card';
                 else if (app.color === 'gray') colorClass = 'gray-card';
 
-                // สร้างปุ่ม Database (ถ้ามีข้อมูล)
                 let dbButtonHtml = '';
                 if (app.dbUrl && app.dbUrl.trim() !== '') {
                     dbButtonHtml = `<a href="${app.dbUrl}" target="_blank" class="btn-link btn-db">📊 Database</a>`;
                 }
 
-                // สร้างโครงสร้าง HTML ของการ์ด
                 const cardHtml = `
                     <div class="app-card ${colorClass}" data-id="${app.id}">
                         <div class="action-icons">
@@ -319,23 +305,16 @@
             });
         }
 
-        // 3. ฟังก์ชันบันทึกลง Local Storage
-        function saveToLocalStorage() {
-            localStorage.setItem('myWebAppsData_v1', JSON.stringify(myAppsData));
-        }
-
-        // 4. เปิดหน้าต่าง Modal (โหมด Add หรือ Edit)
+        // 3. เปิด Modal สำหรับ Add/Edit
         function openModal(mode, id = null) {
             const form = document.getElementById('appForm');
-            form.reset(); // ล้างฟอร์ม
+            form.reset();
             
             if (mode === 'add') {
                 document.getElementById('modalTitle').innerText = 'Add New Website';
                 document.getElementById('appId').value = '';
             } else if (mode === 'edit') {
                 document.getElementById('modalTitle').innerText = 'Edit Website';
-                
-                // หาข้อมูลเดิมมาใส่ในฟอร์ม
                 const appToEdit = myAppsData.find(app => app.id === id);
                 if (appToEdit) {
                     document.getElementById('appId').value = appToEdit.id;
@@ -349,60 +328,94 @@
             bsModal.show();
         }
 
-        // 5. บันทึกข้อมูลจากการกรอกฟอร์ม
-        function saveApp() {
+        // 4. บันทึกข้อมูลไปยัง Supabase (เพิ่ม หรือ แก้ไข)
+        async function saveApp() {
             const form = document.getElementById('appForm');
             if (!form.checkValidity()) {
-                form.reportValidity(); // บังคับให้กรอกช่องที่ Require
+                form.reportValidity();
                 return;
             }
 
             const id = document.getElementById('appId').value;
-            const newApp = {
-                id: id ? id : Date.now().toString(), // สร้าง ID ใหม่ถ้าเป็นการเพิ่ม
-                name: document.getElementById('appName').value,
-                webUrl: document.getElementById('appWebUrl').value,
-                dbUrl: document.getElementById('appDbUrl').value,
-                category: document.getElementById('appCategory').value,
-                color: document.getElementById('appColor').value
-            };
+            const name = document.getElementById('appName').value;
+            const webUrl = document.getElementById('appWebUrl').value;
+            const dbUrl = document.getElementById('appDbUrl').value;
+            const category = document.getElementById('appCategory').value;
+            const color = document.getElementById('appColor').value;
 
             if (id) {
-                // อัปเดตของเก่า
-                const index = myAppsData.findIndex(app => app.id === id);
-                if (index > -1) myAppsData[index] = newApp;
+                // อัปเดตข้อมูลที่มีอยู่แล้ว
+                const { error } = await supabase
+                    .from('web_apps')
+                    .update({
+                        name: name,
+                        web_url: webUrl,
+                        db_url: dbUrl,
+                        category: category,
+                        color: color
+                    })
+                    .eq('id', id);
+
+                if (error) {
+                    console.error("Error updating app:", error);
+                    alert("บันทึกไม่สำเร็จ: " + error.message);
+                    return;
+                }
             } else {
-                // เพิ่มของใหม่ต่อท้าย
-                myAppsData.push(newApp);
+                // เพิ่มข้อมูลใหม่ (ตั้งค่า sort_order ให้อยู่ท้ายสุด)
+                const nextSortOrder = myAppsData.length > 0 ? Math.max(...myAppsData.map(a => a.sortOrder || 0)) + 1 : 1;
+
+                const { error } = await supabase
+                    .from('web_apps')
+                    .insert([{
+                        name: name,
+                        web_url: webUrl,
+                        db_url: dbUrl,
+                        category: category,
+                        color: color,
+                        sort_order: nextSortOrder
+                    }]);
+
+                if (error) {
+                    console.error("Error adding app:", error);
+                    alert("เพิ่มข้อมูลไม่สำเร็จ: " + error.message);
+                    return;
+                }
             }
 
-            saveToLocalStorage();
-            renderApps();
             bsModal.hide();
+            fetchAppsFromSupabase(); // ดึงข้อมูลใหม่
         }
 
-        // 6. ลบข้อมูล
-        function deleteApp(id) {
+        // 5. ลบข้อมูลจาก Supabase
+        async function deleteApp(id) {
             if (confirm("Are you sure you want to delete this website?")) {
-                myAppsData = myAppsData.filter(app => app.id !== id);
-                saveToLocalStorage();
-                renderApps();
+                const { error } = await supabase
+                    .from('web_apps')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) {
+                    console.error("Error deleting app:", error);
+                    alert("ลบข้อมูลไม่สำเร็จ: " + error.message);
+                    return;
+                }
+
+                fetchAppsFromSupabase();
             }
         }
 
-        // 7. ระบบ Drag & Drop (SortableJS)
+        // 6. การ Drag & Drop และบันทึกลำดับ/หมวดหมู่กลับลง Supabase
         function initDragAndDrop() {
             const elMain = document.getElementById('container-main');
             const elChon = document.getElementById('container-chonburi');
 
-            // ตั้งค่าคุณสมบัติการลาก
             const sortableOptions = {
-                group: 'shared', // ยอมให้ลากข้ามหมวดหมู่ได้
+                group: 'shared',
                 animation: 150,
                 ghostClass: 'sortable-ghost',
-                onEnd: function (evt) {
-                    // เมื่อปล่อยเมาส์ จะทำการอ่านลำดับใหม่จากหน้าจอ แล้วอัปเดต Array
-                    updateDataOrderFromDOM();
+                onEnd: function () {
+                    updateDataOrderAndCategory();
                 }
             };
 
@@ -410,34 +423,34 @@
             new Sortable(elChon, sortableOptions);
         }
 
-        // อ่านลำดับการ์ดที่เรียงบนจอใหม่ แล้วบันทึกค่ากลับไป
-        function updateDataOrderFromDOM() {
-            const newData = [];
-            
-            // อ่านค่าจากกล่อง Main
+        // อัปเดตลำดับและหมวดหมู่หลังการ Drag & Drop
+        async function updateDataOrderAndCategory() {
+            const updates = [];
+            let currentOrder = 1;
+
+            // ตรวจสอบจาก DOM หมวด Main
             document.querySelectorAll('#container-main .app-card').forEach(cardEl => {
                 const id = cardEl.getAttribute('data-id');
-                const app = myAppsData.find(a => a.id === id);
-                if (app) {
-                    app.category = 'main'; // เปลี่ยน Category หากโดนลากข้ามหมวด
-                    newData.push(app);
-                }
+                updates.push({ id, category: 'main', sort_order: currentOrder++ });
             });
 
-            // อ่านค่าจากกล่อง Chonburi
+            // ตรวจสอบจาก DOM หมวด Chonburi
             document.querySelectorAll('#container-chonburi .app-card').forEach(cardEl => {
                 const id = cardEl.getAttribute('data-id');
-                const app = myAppsData.find(a => a.id === id);
-                if (app) {
-                    app.category = 'chonburi'; // เปลี่ยน Category หากโดนลากข้ามหมวด
-                    newData.push(app);
-                }
+                updates.push({ id, category: 'chonburi', sort_order: currentOrder++ });
             });
 
-            myAppsData = newData; // เขียนทับ Array เดิมด้วยลำดับใหม่
-            saveToLocalStorage();
-        }
+            // ส่งข้อมูลกลับไป อัปเดตแบบ Batch
+            for (const item of updates) {
+                await supabase
+                    .from('web_apps')
+                    .update({ category: item.category, sort_order: item.sort_order })
+                    .eq('id', item.id);
+            }
 
+            // โหลดข้อมูลล่าสุดมาซิงค์ในตัวแปร local
+            fetchAppsFromSupabase();
+        }
     </script>
 </body>
 </html>
