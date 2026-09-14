@@ -1,20 +1,23 @@
 const fs = require('fs');
+const path = require('path');
 
-// อ่านไฟล์ index.html (หรือไฟล์ต้นฉบับที่คุณใช้)
+// 1. อ่านไฟล์ index.html ต้นฉบับ
 let html = fs.readFileSync('./index.html', 'utf8');
 
-// ดึง Environment Variables ตามชื่อจริงที่ตั้งไว้ใน Vercel
+// 2. ดึง Environment Variables จาก Vercel
 const supabaseUrl = process.env.NEXT_PUBLIC_Myapps_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_Myapps_SUPABASE_PUBLISHABLE_KEY || '';
 
-// ตรวจสอบสถานะใน Build Log
-console.log('URL status:', supabaseUrl ? 'Found' : 'Missing');
-console.log('KEY status:', supabaseAnonKey ? 'Found' : 'Missing');
-
-// แทนที่ Placeholders ด้วยค่าจริง
+// 3. แทนที่ Placeholders
 html = html.replace('__SUPABASE_URL__', supabaseUrl);
 html = html.replace('__SUPABASE_ANON_KEY__', supabaseAnonKey);
 
-// เขียนไฟล์ผลลัพธ์เพื่อนำไปแสดงผล
-fs.writeFileSync('./index.html', html);
-console.log('Build completed successfully!');
+// 4. สร้างโฟลเดอร์ public ถ้ายังไม่มี
+const outputDir = path.join(__dirname, 'public');
+if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+}
+
+// 5. เขียนไฟล์ลงใน public/index.html
+fs.writeFileSync(path.join(outputDir, 'index.html'), html);
+console.log('Successfully generated public/index.html');
