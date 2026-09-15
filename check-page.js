@@ -40,6 +40,13 @@ async function main() {
         ['container-chonburi', result.data.includes('id="container-chonburi"')],
         ['fetchAppsFromSupabase', result.data.includes('fetchAppsFromSupabase')],
         ['renderApps', result.data.includes('renderApps')],
+        // New feature checks
+        ['confirmModal', result.data.includes('id="confirmModal"')],
+        ['archive icon', result.data.includes('bi-archive')],
+        ['active toggle', result.data.includes('appActive')],
+        ['filterActiveOnly', result.data.includes('filterActiveOnly')],
+        ['active column select', result.data.includes(".eq('active', true)")],
+        ['archiveApp', result.data.includes('archiveApp')],
     ];
     
     console.log('\n=== Content Checks ===');

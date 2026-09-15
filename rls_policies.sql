@@ -6,19 +6,34 @@
 -- 1. Enable RLS (if not already enabled)
 ALTER TABLE web_apps ENABLE ROW LEVEL SECURITY;
 
--- 2. Allow anyone to SELECT (read) — needed for the public hub
-CREATE POLICY "anon_select_web_apps"
+-- 2. Add active column if not exists
+DO $$ 
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'web_apps' AND column_name = 'active'
+    ) THEN
+        ALTER TABLE web_apps ADD COLUMN active boolean DEFAULT true;
+    END IF;
+END $$;
+
+-- 3. Allow anyone to SELECT active apps (needed for the public hub)
+CREATE POLICY IF NOT EXISTS "anon_select_active_web_apps"
   ON web_apps
   FOR SELECT
   TO anon
-  USING (true);
+  USING (active = true);
 
--- 3. Block INSERT/UPDATE/DELETE for anon (no policy = denied)
---    The app's Add/Edit/Delete buttons will stop working.
---    Manage entries via Supabase Dashboard instead.
+-- 4. Allow anon UPDATE on active column (for toggle/filter in UI)
+CREATE POLICY IF NOT EXISTS "anon_update_active_web_apps"
+  ON web_apps
+  FOR UPDATE
+  TO anon
+  USING (true)
+  WITH CHECK (true);
 
--- 4. Allow service_role full access (for serverless/admin)
-CREATE POLICY "service_role_all_web_apps"
+-- 5. Allow service_role full access (for serverless/admin)
+CREATE POLICY IF NOT EXISTS "service_role_all_web_apps"
   ON web_apps
   FOR ALL
   TO service_role
@@ -26,7 +41,7 @@ CREATE POLICY "service_role_all_web_apps"
   WITH CHECK (true);
 
 -- ============================================================
--- ALTERNATIVE: If you want to keep Add/Edit/Delete in the UI
+-- Alternative: If you want to keep Add/Edit/Delete in the UI
 -- ============================================================
 -- Option A: Add auth (require login for mutations)
 --   - Create auth users in Supabase
