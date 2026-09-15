@@ -244,8 +244,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-        const SUPABASE_URL = '';
-        const SUPABASE_ANON_KEY = '';
+        const SUPABASE_URL = '__SUPABASE_URL__';
+        const SUPABASE_ANON_KEY = '__SUPABASE_ANON_KEY__';
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let myAppsData = [];
@@ -413,7 +413,7 @@
             if (confirm("Are you sure you want to delete this website?")) {
                 const { error } = await supabaseClient
                     .from('web_apps')
-                    .update({ active: false })
+                    .delete()
                     .eq('id', id);
 
                 if (error) {
