@@ -18,14 +18,17 @@ BEGIN
 END $$;
 
 -- 3. Allow anyone to SELECT active apps (needed for the public hub)
-CREATE POLICY IF NOT EXISTS "anon_select_active_web_apps"
+-- Drop existing policy if it exists, then create new one
+DROP POLICY IF EXISTS anon_select_active_web_apps ON web_apps;
+CREATE POLICY anon_select_active_web_apps
   ON web_apps
   FOR SELECT
   TO anon
   USING (active = true);
 
 -- 4. Allow anon UPDATE on active column (for toggle/filter in UI)
-CREATE POLICY IF NOT EXISTS "anon_update_active_web_apps"
+DROP POLICY IF EXISTS anon_update_active_web_apps ON web_apps;
+CREATE POLICY anon_update_active_web_apps
   ON web_apps
   FOR UPDATE
   TO anon
@@ -33,7 +36,8 @@ CREATE POLICY IF NOT EXISTS "anon_update_active_web_apps"
   WITH CHECK (true);
 
 -- 5. Allow service_role full access (for serverless/admin)
-CREATE POLICY IF NOT EXISTS "service_role_all_web_apps"
+DROP POLICY IF EXISTS service_role_all_web_apps ON web_apps;
+CREATE POLICY service_role_all_web_apps
   ON web_apps
   FOR ALL
   TO service_role
