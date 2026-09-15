@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Web App Hub</title>
-    
+
     <!-- นำเข้า Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- นำเข้า Bootstrap Icons -->
@@ -64,7 +64,7 @@
             box-shadow: 0 8px 16px rgba(0,0,0,0.1);
             border-color: #1a73e8;
         }
-        
+
         .highlight-card { background: #fffdf5; border: 1px solid #fde293; }
         .highlight-card:hover { border-color: #fbbc04; }
         .highlight-card .app-title { color: #d89800; }
@@ -72,7 +72,7 @@
         .gray-card { background: #f8f9fa; border: 1px solid #dadce0; }
         .gray-card:hover { border-color: #9aa0a6; }
         .gray-card .app-title { color: #5f6368; }
-        
+
         .app-title {
             font-size: 1.2em;
             font-weight: bold;
@@ -118,7 +118,7 @@
         .icon-btn:hover { transform: scale(1.2); }
         .icon-btn.edit:hover { color: #1a73e8; }
         .icon-btn.delete:hover { color: #dc3545; }
-        
+
         .header-container {
             width: 100%;
             max-width: 1000px;
@@ -126,7 +126,7 @@
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .btn-primary-valeo {
             background-color: #1a73e8;
             color: white;
@@ -137,75 +137,9 @@
             cursor: pointer;
         }
         .btn-primary-valeo:hover { background-color: #1557b0; }
-        
+
         .sortable-ghost { opacity: 0.4; border: 2px dashed #1a73e8; }
-
-                /* Archived card styling */
-                .archived-card {
-                    opacity: 0.5;
-                    background: #f8f9fa;
-                    border-color: #ccc;
-                }
-                .archived-card .app-title {
-                    color: #999;
-                    text-decoration: line-through;
-                }
-                .archived-card:hover {
-                    border-color: #ccc;
-                    transform: none;
-                    box-shadow: none;
-                }
-
-                /* Active toggle switch */
-                .toggle-switch {
-                    position: relative;
-                    display: inline-block;
-                    width: 44px;
-                    height: 24px;
-                }
-                .toggle-switch input { opacity: 0; width: 0; height: 0; }
-                .toggle-slider {
-                    position: absolute;
-                    cursor: pointer;
-                    top: 0; left: 0; right: 0; bottom: 0;
-                    background-color: #ccc;
-                    border-radius: 24px;
-                    transition: 0.3s;
-                }
-                .toggle-slider:before {
-                    position: absolute;
-                    content: "";
-                    height: 18px;
-                    width: 18px;
-                    left: 3px;
-                    bottom: 3px;
-                    background-color: white;
-                    border-radius: 50%;
-                    transition: 0.3s;
-                }
-                .toggle-switch input:checked + .toggle-slider {
-                    background-color: #28a745;
-                }
-                .toggle-switch input:checked + .toggle-slider:before {
-                    transform: translateX(20px);
-                }
-
-                /* Filter bar */
-                .filter-bar {
-                    width: 100%;
-                    max-width: 1000px;
-                    display: flex;
-                    justify-content: flex-end;
-                    align-items: center;
-                    gap: 12px;
-                    margin-bottom: 5px;
-                    padding: 8px 0;
-                }
-                .filter-bar .form-check-label {
-                    font-size: 0.9em;
-                    color: #555;
-                }
-            </style>
+    </style>
 </head>
 <body>
 
@@ -222,18 +156,10 @@
     <div class="app-container" id="container-main"></div>
 
     <!-- หมวดหมู่ Chonburi plant -->
-        <h2 class="section-title">Chonburi plant (Sample)</h2>
-        <div class="app-container" id="container-chonburi"></div>
+    <h2 class="section-title">Chonburi plant (Sample)</h2>
+    <div class="app-container" id="container-chonburi"></div>
 
-        <!-- Filter bar: Show Active Only toggle -->
-        <div class="filter-bar">
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="filterActiveOnly" role="switch" checked onchange="toggleFilterActiveOnly()">
-                <label class="form-check-label" for="filterActiveOnly">Show Active Only</label>
-            </div>
-        </div>
-
-        <!-- MODAL (หน้าต่างเพิ่ม/แก้ไข) -->
+    <!-- MODAL (หน้าต่างเพิ่ม/แก้ไข) -->
     <div class="modal fade" id="appModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="border-radius: 12px; border: none;">
@@ -244,17 +170,17 @@
           <div class="modal-body">
             <form id="appForm">
               <input type="hidden" id="appId">
-              
+
               <div class="mb-3">
                 <label class="form-label fw-bold">Name</label>
                 <input type="text" class="form-control" id="appName" required placeholder="e.g. Sale Inventory Dashboard">
               </div>
-              
+
               <div class="mb-3">
                 <label class="form-label fw-bold">Website URL (Web App)</label>
                 <input type="url" class="form-control" id="appWebUrl" required placeholder="https://script.google.com/...">
               </div>
-              
+
               <div class="mb-3">
                 <label class="form-label fw-bold">Database URL (Optional)</label>
                 <input type="url" class="form-control" id="appDbUrl" placeholder="https://docs.google.com/...">
@@ -268,7 +194,7 @@
                                       <option value="chonburi">Chonburi plant</option>
                                   </select>
                                 </div>
-                  
+                 
                                 <div class="col-6 mb-3">
                                   <label class="form-label fw-bold">Card Color</label>
                                   <select class="form-select" id="appColor">
@@ -278,14 +204,7 @@
                                   </select>
                                 </div>
                             </div>
-
-                            <div class="mb-3">
-                              <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="appActive" checked>
-                                <label class="form-check-label" for="appActive">Active</label>
-                              </div>
-                            </div>
-                          </form>
+          </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -295,22 +214,21 @@
       </div>
     </div>
 
-    <!-- Confirmation Modal -->
+    <!-- Confirmation Modal for Delete -->
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="border-radius: 12px; border: none;">
           <div class="modal-header bg-danger text-white">
-            <h5 class="modal-title fw-bold"><i class="bi bi-exclamation-triangle"></i> Confirm Archive</h5>
+            <h5 class="modal-title fw-bold"><i class="bi bi-exclamation-triangle"></i> Confirm Delete</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <p>Are you sure you want to <strong>archive</strong> this website?</p>
+            <p>Are you sure you want to <strong>delete</strong> this website?</p>
             <p class="mb-0 text-muted" id="confirmAppName"></p>
-            <p class="mt-2 mb-0 text-muted" style="font-size: 0.85em;">The app will be hidden from the list but can be reactivated later.</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-danger" id="confirmArchiveBtn">Archive</button>
+            <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
           </div>
         </div>
       </div>
@@ -327,358 +245,231 @@
         const SUPABASE_URL = '__SUPABASE_URL__';
         const SUPABASE_ANON_KEY = '__SUPABASE_ANON_KEY__';
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
+
         let myAppsData = [];
-                let bsModal = null;
-                let confirmBsModal = null;
+        let bsModal = null;
+        let confirmBsModal = null;
 
-                document.addEventListener("DOMContentLoaded", () => {
-                    bsModal = new bootstrap.Modal(document.getElementById('appModal'));
-                    confirmBsModal = new bootstrap.Modal(document.getElementById('confirmModal'));
-                    fetchAppsFromSupabase();
-                    initDragAndDrop();
-                });
+        document.addEventListener("DOMContentLoaded", () => {
+            bsModal = new bootstrap.Modal(document.getElementById('appModal'));
+            confirmBsModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+            fetchAppsFromSupabase();
+            initDragAndDrop();
+        });
 
-                // 1. ดึงข้อมูลที่ active=true จาก Supabase
-                async function fetchAppsFromSupabase() {
-                    const { data, error } = await supabaseClient
-                        .from('web_apps')
-                        .select('*')
-                        .eq('active', true)
-                        .order('sort_order', { ascending: true });
+        // 1. ดึงข้อมูลทั้งหมดจาก Supabase
+        async function fetchAppsFromSupabase() {
+            const { data, error } = await supabaseClient
+                .from('web_apps')
+                .select('*')
+                .order('sort_order', { ascending: true });
 
-                    if (error) {
-                        console.error("Error fetching data:", error);
-                        alert("เกิดข้อผิดพลาดในการโหลดข้อมูลจาก Supabase");
-                        return;
-                    }
+            if (error) {
+                console.error("Error fetching data:", error);
+                alert("เกิดข้อผิดพลาดในการโหลดข้อมูลจาก Supabase");
+                return;
+            }
 
-                    // แปลง snake_case จาก Postgres เป็น camelCase
-                    myAppsData = data.map(item => ({
-                        id: item.id,
-                        name: item.name,
-                        webUrl: item.web_url,
-                        dbUrl: item.db_url,
-                        category: item.category,
-                        color: item.color,
-                        sortOrder: item.sort_order,
-                        active: item.active !== false  // default true
-                    }));
+            // แปลง snake_case จาก Postgres เป็น camelCase
+            myAppsData = data.map(item => ({
+                id: item.id,
+                name: item.name,
+                webUrl: item.web_url,
+                dbUrl: item.db_url,
+                category: item.category,
+                color: item.color,
+                sortOrder: item.sort_order
+            }));
 
-                    renderApps();
+            renderApps();
+        }
+
+        // 2. เรนเดอร์การ์ดลงหน้าเว็บ
+        function renderApps() {
+            const mainContainer = document.getElementById('container-main');
+            const chonburiContainer = document.getElementById('container-chonburi');
+
+            mainContainer.innerHTML = '';
+            chonburiContainer.innerHTML = '';
+
+            myAppsData.forEach(app => {
+                let colorClass = '';
+                if (app.color === 'highlight') colorClass = 'highlight-card';
+                else if (app.color === 'gray') colorClass = 'gray-card';
+
+                let dbButtonHtml = '';
+                if (app.dbUrl && app.dbUrl.trim() !== '') {
+                    dbButtonHtml = `<a href="${app.dbUrl}" target="_blank" class="btn-link btn-db">📊 Database</a>`;
                 }
 
-                // Toggle filter: show only active apps
-                function toggleFilterActiveOnly() {
-                    const filterCheckbox = document.getElementById('filterActiveOnly');
-                    if (!filterCheckbox.checked) {
-                        // Show all (active + inactive)
-                        fetchAllAppsFromSupabase();
-                    } else {
-                        // Show active only (default behavior)
-                        fetchAppsFromSupabase();
-                    }
+                const cardHtml = `
+                    <div class="app-card ${colorClass}" data-id="${app.id}">
+                        <div class="action-icons">
+                            <i class="bi bi-pencil-square icon-btn edit" onclick="openModal('edit', '${app.id}')" title="Edit"></i>
+                            <i class="bi bi-trash icon-btn delete" onclick="deleteApp('${app.id}')" title="Delete"></i>
+                        </div>
+                        <div class="app-title">${app.name}</div>
+                        <div class="btn-group">
+                            <a href="${app.webUrl}" target="_blank" class="btn-link btn-app">💻 Web App</a>
+                            ${dbButtonHtml}
+                        </div>
+                    </div>
+                `;
+
+                if (app.category === 'main') {
+                    mainContainer.innerHTML += cardHtml;
+                } else {
+                    chonburiContainer.innerHTML += cardHtml;
                 }
-
-                // Fetch ALL apps including archived (for filter view)
-                async function fetchAllAppsFromSupabase() {
-                    const { data, error } = await supabaseClient
-                        .from('web_apps')
-                        .select('*')
-                        .order('sort_order', { ascending: true });
-
-                    if (error) {
-                        console.error("Error fetching data:", error);
-                        alert("เกิดข้อผิดพลาดในการโหลดข้อมูลจาก Supabase");
-                        return;
-                    }
-
-                    myAppsData = data.map(item => ({
-                        id: item.id,
-                        name: item.name,
-                        webUrl: item.web_url,
-                        dbUrl: item.db_url,
-                        category: item.category,
-                        color: item.color,
-                        sortOrder: item.sort_order,
-                        active: item.active !== false
-                    }));
-
-                    renderApps();
-                }
-
-                // 2. เรนเดอร์การ์ดลงหน้าเว็บ
-                function renderApps() {
-                    const mainContainer = document.getElementById('container-main');
-                    const chonburiContainer = document.getElementById('container-chonburi');
-            
-                    mainContainer.innerHTML = '';
-                    chonburiContainer.innerHTML = '';
-
-                    myAppsData.forEach(app => {
-                        let colorClass = '';
-                        if (app.color === 'highlight') colorClass = 'highlight-card';
-                        else if (app.color === 'gray') colorClass = 'gray-card';
-                        if (!app.active) colorClass += ' archived-card';
-
-                        let dbButtonHtml = '';
-                        if (app.dbUrl && app.dbUrl.trim() !== '') {
-                            dbButtonHtml = `<a href="${app.dbUrl}" target="_blank" class="btn-link btn-db">📊 Database</a>`;
-                        }
-
-                        const cardHtml = `
-                            <div class="app-card ${colorClass}" data-id="${app.id}">
-                                <div class="action-icons">
-                                    <i class="bi bi-pencil-square icon-btn edit" onclick="openModal('edit', '${app.id}')" title="Edit"></i>
-                                    <i class="bi bi-archive icon-btn archive" onclick="openConfirmModal('${app.id}', '${app.name}')" title="${app.active ? 'Archive' : 'Reactivate'}"></i>
-                                </div>
-                                <div class="app-title">${app.name}</div>
-                                <div class="btn-group">
-                                    <a href="${app.webUrl}" target="_blank" class="btn-link btn-app">💻 Web App</a>
-                                    ${dbButtonHtml}
-                                </div>
-                                <div class="mt-2">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="toggle-${app.id}" ${app.active ? 'checked' : ''} onchange="toggleActive('${app.id}', this.checked)">
-                                        <label class="form-check-label" for="toggle-${app.id}">Active</label>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-
-                        if (app.category === 'main') {
-                            mainContainer.innerHTML += cardHtml;
-                        } else {
-                            chonburiContainer.innerHTML += cardHtml;
-                        }
-                    });
-                }
+            });
+        }
 
         // 3. เปิด Modal สำหรับ Add/Edit
-                function openModal(mode, id = null) {
-                    const form = document.getElementById('appForm');
-                    form.reset();
-            
-                    if (mode === 'add') {
-                        document.getElementById('modalTitle').innerText = 'Add New Website';
-                        document.getElementById('appId').value = '';
-                        document.getElementById('appActive').checked = true;
-                    } else if (mode === 'edit') {
-                        document.getElementById('modalTitle').innerText = 'Edit Website';
-                        const appToEdit = myAppsData.find(app => app.id === id);
-                        if (appToEdit) {
-                            document.getElementById('appId').value = appToEdit.id;
-                            document.getElementById('appName').value = appToEdit.name;
-                            document.getElementById('appWebUrl').value = appToEdit.webUrl;
-                            document.getElementById('appDbUrl').value = appToEdit.dbUrl;
-                            document.getElementById('appCategory').value = appToEdit.category;
-                            document.getElementById('appColor').value = appToEdit.color;
-                            document.getElementById('appActive').checked = appToEdit.active !== false;
-                        }
-                    }
-                    bsModal.show();
+        function openModal(mode, id = null) {
+            const form = document.getElementById('appForm');
+            form.reset();
+
+            if (mode === 'add') {
+                document.getElementById('modalTitle').innerText = 'Add New Website';
+                document.getElementById('appId').value = '';
+            } else if (mode === 'edit') {
+                document.getElementById('modalTitle').innerText = 'Edit Website';
+                const appToEdit = myAppsData.find(app => app.id === id);
+                if (appToEdit) {
+                    document.getElementById('appId').value = appToEdit.id;
+                    document.getElementById('appName').value = appToEdit.name;
+                    document.getElementById('appWebUrl').value = appToEdit.webUrl;
+                    document.getElementById('appDbUrl').value = appToEdit.dbUrl;
+                    document.getElementById('appCategory').value = appToEdit.category;
+                    document.getElementById('appColor').value = appToEdit.color;
                 }
-
-                // 3b. เปิด Confirmation Modal สำหรับ Archive/Reactivate
-                function openConfirmModal(id, name) {
-                    document.getElementById('confirmAppName').innerText = name;
-                    const app = myAppsData.find(a => a.id === id);
-                    const isActive = app && app.active !== false;
-                    const btn = document.getElementById('confirmArchiveBtn');
-                    const title = document.querySelector('#confirmModal .modal-title');
-                    const icon = title.querySelector('i');
-            
-                    if (isActive) {
-                        btn.className = 'btn btn-danger';
-                        btn.innerText = 'Archive';
-                        icon.className = 'bi bi-exclamation-triangle';
-                        title.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Confirm Archive';
-                    } else {
-                        btn.className = 'btn btn-success';
-                        btn.innerText = 'Reactivate';
-                        icon.className = 'bi bi-check-circle';
-                        title.innerHTML = '<i class="bi bi-check-circle"></i> Confirm Reactivate';
-                    }
-            
-                    // Store the id and action type on the button
-                    btn.dataset.appId = id;
-                    confirmBsModal.show();
-                }
-
-                // Handle archive/reactivate confirmation
-                document.getElementById('confirmArchiveBtn').addEventListener('click', async () => {
-                    const id = document.getElementById('confirmArchiveBtn').dataset.appId;
-                    const btn = document.getElementById('confirmArchiveBtn');
-                    const isArchiving = btn.innerText === 'Archive';
-            
-                    try {
-                        const { error } = await supabaseClient
-                            .from('web_apps')
-                            .update({ active: isArchiving ? false : true })
-                            .eq('id', id);
-
-                        if (error) {
-                            console.error("Error updating active status:", error);
-                            alert(isArchiving ? "ไม่สามารถ archive ได้: " + error.message : "ไม่สามารถ reactivate ได้: " + error.message);
-                            return;
-                        }
-
-                        confirmBsModal.hide();
-                        fetchAppsFromSupabase();
-                    } catch (e) {
-                        console.error(e);
-                        alert("เกิดข้อผิดพลาด กรุณาลองอีกครั้ง");
-                    }
-                });
-
-                // Toggle active from card switch
-                async function toggleActive(id, isActive) {
-                    const { error } = await supabaseClient
-                        .from('web_apps')
-                        .update({ active: isActive })
-                        .eq('id', id);
-
-                    if (error) {
-                        console.error("Error toggling active:", error);
-                        alert("ไม่สามารถเปลี่ยนสถานะได้: " + error.message);
-                        // Revert the toggle
-                        document.getElementById(`toggle-${id}`).checked = !isActive;
-                        return;
-                    }
-                }
+            }
+            bsModal.show();
+        }
 
         // 4. บันทึกข้อมูลไปยัง Supabase (เพิ่ม หรือ แก้ไข)
-                async function saveApp() {
-                    const form = document.getElementById('appForm');
-                    if (!form.checkValidity()) {
-                        form.reportValidity();
-                        return;
-                    }
+        async function saveApp() {
+            const form = document.getElementById('appForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
 
-                    const id = document.getElementById('appId').value;
-                    const name = document.getElementById('appName').value;
-                    const webUrl = document.getElementById('appWebUrl').value;
-                    const dbUrl = document.getElementById('appDbUrl').value;
-                    const category = document.getElementById('appCategory').value;
-                    const color = document.getElementById('appColor').value;
-                    const active = document.getElementById('appActive').checked;
+            const id = document.getElementById('appId').value;
+            const name = document.getElementById('appName').value;
+            const webUrl = document.getElementById('appWebUrl').value;
+            const dbUrl = document.getElementById('appDbUrl').value;
+            const category = document.getElementById('appCategory').value;
+            const color = document.getElementById('appColor').value;
 
-                    if (id) {
-                        // อัปเดตข้อมูลที่มีอยู่แล้ว
-                        const { error } = await supabaseClient
-                            .from('web_apps')
-                            .update({
-                                name: name,
-                                web_url: webUrl,
-                                db_url: dbUrl,
-                                category: category,
-                                color: color,
-                                active: active
-                            })
-                            .eq('id', id);
+            if (id) {
+                // อัปเดตข้อมูลที่มีอยู่แล้ว
+                const { error } = await supabaseClient
+                    .from('web_apps')
+                    .update({
+                        name: name,
+                        web_url: webUrl,
+                        db_url: dbUrl,
+                        category: category,
+                        color: color
+                    })
+                    .eq('id', id);
 
-                        if (error) {
-                            console.error("Error updating app:", error);
-                            alert("บันทึกไม่สำเร็จ: " + error.message);
-                            return;
-                        }
-                    } else {
-                        // เพิ่มข้อมูลใหม่ (ตั้งค่า sort_order ให้อยู่ท้ายสุด)
-                        const nextSortOrder = myAppsData.length > 0 ? Math.max(...myAppsData.map(a => a.sortOrder || 0)) + 1 : 1;
+                if (error) {
+                    console.error("Error updating app:", error);
+                    alert("บันทึกไม่สำเร็จ: " + error.message);
+                    return;
+                }
+            } else {
+                // เพิ่มข้อมูลใหม่ (ตั้งค่า sort_order ให้อยู่ท้ายสุด)
+                const nextSortOrder = myAppsData.length > 0 ? Math.max(...myAppsData.map(a => a.sortOrder || 0)) + 1 : 1;
 
-                        const { error } = await supabaseClient
-                            .from('web_apps')
-                            .insert([{
-                                name: name,
-                                web_url: webUrl,
-                                db_url: dbUrl,
-                                category: category,
-                                color: color,
-                                sort_order: nextSortOrder,
-                                active: active
-                            }]);
+                const { error } = await supabaseClient
+                    .from('web_apps')
+                    .insert([{
+                        name: name,
+                        web_url: webUrl,
+                        db_url: dbUrl,
+                        category: category,
+                        color: color,
+                        sort_order: nextSortOrder
+                    }]);
 
-                        if (error) {
-                            console.error("Error adding app:", error);
-                            alert("เพิ่มข้อมูลไม่สำเร็จ: " + error.message);
-                            return;
-                        }
-                    }
+                if (error) {
+                    console.error("Error adding app:", error);
+                    alert("เพิ่มข้อมูลไม่สำเร็จ: " + error.message);
+                    return;
+                }
+            }
 
-                    bsModal.hide();
-                    fetchAppsFromSupabase(); // ดึงข้อมูลใหม่
+            bsModal.hide();
+            fetchAppsFromSupabase(); // ดึงข้อมูลใหม่
+        }
+
+        // 5. ลบข้อมูลจาก Supabase
+        async function deleteApp(id) {
+            if (confirm("Are you sure you want to delete this website?")) {
+                const { error } = await supabaseClient
+                    .from('web_apps')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) {
+                    console.error("Error deleting app:", error);
+                    alert("ลบข้อมูลไม่สำเร็จ: " + error.message);
+                    return;
                 }
 
-        // 5. Archive/Reactivate app via Supabase (soft delete)
-                async function archiveApp(id) {
-                    const app = myAppsData.find(a => a.id === id);
-                    const isArchiving = app && app.active !== false;
-                    const action = isArchiving ? 'archive' : 'reactivate';
-            
-                    if (!confirm(`Are you sure you want to ${action} this website?`)) {
-                        return;
-                    }
+                fetchAppsFromSupabase();
+            }
+        }
 
-                    const { error } = await supabaseClient
-                        .from('web_apps')
-                        .update({ active: !isArchiving })
-                        .eq('id', id);
+        // 6. การ Drag & Drop และบันทึกลำดับ/หมวดหมู่กลับลง Supabase
+        function initDragAndDrop() {
+            const elMain = document.getElementById('container-main');
+            const elChon = document.getElementById('container-chonburi');
 
-                    if (error) {
-                        console.error(`Error ${action}ing app:`, error);
-                        alert(`ไม่สามารถ ${action} ได้: ${error.message}`);
-                        return;
-                    }
-
-                    fetchAppsFromSupabase();
+            const sortableOptions = {
+                group: 'shared',
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                onEnd: function () {
+                    updateDataOrderAndCategory();
                 }
+            };
 
-                // 6. การ Drag & Drop และบันทึกลำดับ/หมวดหมู่กลับลง Supabase
-                function initDragAndDrop() {
-                    const elMain = document.getElementById('container-main');
-                    const elChon = document.getElementById('container-chonburi');
+            new Sortable(elMain, sortableOptions);
+            new Sortable(elChon, sortableOptions);
+        }
 
-                    const sortableOptions = {
-                        group: 'shared',
-                        animation: 150,
-                        ghostClass: 'sortable-ghost',
-                        onEnd: function () {
-                            updateDataOrderAndCategory();
-                        }
-                    };
+        // อัปเดตลำดับและหมวดหมู่หลังการ Drag & Drop
+        async function updateDataOrderAndCategory() {
+            const updates = [];
+            let currentOrder = 1;
 
-                    new Sortable(elMain, sortableOptions);
-                    new Sortable(elChon, sortableOptions);
-                }
+            // ตรวจสอบจาก DOM หมวด Main
+            document.querySelectorAll('#container-main .app-card').forEach(cardEl => {
+                const id = cardEl.getAttribute('data-id');
+                updates.push({ id, category: 'main', sort_order: currentOrder++ });
+            });
 
-                // อัปเดตลำดับและหมวดหมู่หลังการ Drag & Drop
-                async function updateDataOrderAndCategory() {
-                    const updates = [];
-                    let currentOrder = 1;
+            // ตรวจสอบจาก DOM หมวด Chonburi
+            document.querySelectorAll('#container-chonburi .app-card').forEach(cardEl => {
+                const id = cardEl.getAttribute('data-id');
+                updates.push({ id, category: 'chonburi', sort_order: currentOrder++ });
+            });
 
-                    // ตรวจสอบจาก DOM หมวด Main
-                    document.querySelectorAll('#container-main .app-card').forEach(cardEl => {
-                        const id = cardEl.getAttribute('data-id');
-                        updates.push({ id, category: 'main', sort_order: currentOrder++ });
-                    });
+            // ส่งข้อมูลกลับไป อัปเดตแบบ Batch
+            for (const item of updates) {
+                await supabaseClient
+                    .from('web_apps')
+                    .update({ category: item.category, sort_order: item.sort_order })
+                    .eq('id', item.id);
+            }
 
-                    // ตรวจสอบจาก DOM หมวด Chonburi
-                    document.querySelectorAll('#container-chonburi .app-card').forEach(cardEl => {
-                        const id = cardEl.getAttribute('data-id');
-                        updates.push({ id, category: 'chonburi', sort_order: currentOrder++ });
-                    });
-
-                    // ส่งข้อมูลกลับไป อัปเดตแบบ Batch
-                    for (const item of updates) {
-                        await supabaseClient
-                            .from('web_apps')
-                            .update({ category: item.category, sort_order: item.sort_order })
-                            .eq('id', item.id);
-                    }
-
-                    // โหลดข้อมูลล่าสุดมาซิงค์ในตัวแปร local
-                    fetchAppsFromSupabase();
-                }
+            // โหลดข้อมูลล่าสุดมาซิงค์ในตัวแปร local
+            fetchAppsFromSupabase();
+        }
     </script>
 </body>
 </html>
